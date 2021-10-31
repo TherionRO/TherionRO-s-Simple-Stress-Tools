@@ -8,3 +8,10 @@ Also this app was made in a hurry.
 
 # How to install ?
 Check out the release page,and install the latest .apk file !
+
+# What I had in mind ?
+I wanted to create just a simple app fore a small group of AV developers. The goal of this project is to be as light as possible(as less storage used by the app) and as fast as possible,that's why the projects have a few files and the app is a few megabytes.
+
+# Can I edit this app ?
+Yes,the app is open-source. You can edit it and change everything you want.
+
