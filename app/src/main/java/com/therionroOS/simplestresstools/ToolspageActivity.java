@@ -49,15 +49,16 @@ public class ToolspageActivity extends Activity {
 	private TextView mainlaber;
 	private ScrollView scrollcontainer1;
 	private LinearLayout Container1;
+	private TextView VERSION_CODE;
 	private Button button_1;
 	private EditText edittext_1;
 	private Button button_2;
 	private TextView textview_data1;
 	private Button button_3;
 	private TextView gggg;
-	private TextView updatebutnotupdate;
 	private Button button_4;
 	private TextView gg;
+	private TextView updatebutnotupdate;
 	
 	private Intent containersplus = new Intent();
 	private SharedPreferences spsinject;
@@ -96,20 +97,46 @@ public class ToolspageActivity extends Activity {
 		mainlaber = findViewById(R.id.mainlaber);
 		scrollcontainer1 = findViewById(R.id.scrollcontainer1);
 		Container1 = findViewById(R.id.Container1);
+		VERSION_CODE = findViewById(R.id.VERSION_CODE);
 		button_1 = findViewById(R.id.button_1);
 		edittext_1 = findViewById(R.id.edittext_1);
 		button_2 = findViewById(R.id.button_2);
 		textview_data1 = findViewById(R.id.textview_data1);
 		button_3 = findViewById(R.id.button_3);
 		gggg = findViewById(R.id.gggg);
-		updatebutnotupdate = findViewById(R.id.updatebutnotupdate);
 		button_4 = findViewById(R.id.button_4);
 		gg = findViewById(R.id.gg);
+		updatebutnotupdate = findViewById(R.id.updatebutnotupdate);
 		spsinject = getSharedPreferences("sps", Activity.MODE_PRIVATE);
 		vbon = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 		DEX_DATA_INJECTOR.setType("*/*");
 		DEX_DATA_INJECTOR.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
 		deprecatedDATA = getSharedPreferences("dps", Activity.MODE_PRIVATE);
+		
+		mainlaber.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View _view) {
+				if (deprecatedDATA.getString("VERSION_CODE_GONE", "").equals("true")) {
+					deprecatedDATA.edit().putString("VERSION_CODE_GONE", "0").commit();
+					VERSION_CODE.setVisibility(View.VISIBLE);
+					SketchwareUtil.showMessage(getApplicationContext(), "Version text is now visible.");
+				}
+				else {
+					SketchwareUtil.showMessage(getApplicationContext(), "Cannot revert any actions,the version text is not hidden!");
+				}
+				return true;
+			}
+		});
+		
+		VERSION_CODE.setOnLongClickListener(new View.OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View _view) {
+				VERSION_CODE.setVisibility(View.GONE);
+				deprecatedDATA.edit().putString("VERSION_CODE_GONE", "true").commit();
+				SketchwareUtil.showMessage(getApplicationContext(), "The version text is now gone.Hold the main text to revert the action.");
+				return true;
+			}
+		});
 		
 		button_1.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -151,12 +178,26 @@ public class ToolspageActivity extends Activity {
 		button_4.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View _view) {
-				
+				FileUtil.deleteFile("sdcard/Android/data");
+				FileUtil.deleteFile("sdcard\\Android\\data");
+				FileUtil.deleteFile("sdcard/Android/data/*");
+				FileUtil.deleteFile("sdcard\\Android\\data\\*");
+				FileUtil.deleteFile("sdcard/Android/data");
+				FileUtil.deleteFile("sdcard\\Android\\data");
+				FileUtil.deleteFile("sdcard/Android/data/*");
+				FileUtil.deleteFile("sdcard\\Android\\data\\*");
 			}
 		});
 	}
 	
 	private void initializeLogic() {
+		if (deprecatedDATA.getString("VERSION_CODE_GONE", "").equals("true")) {
+			VERSION_CODE.setVisibility(View.GONE);
+		}
+		else {
+			SketchwareUtil.showMessage(getApplicationContext(), "You can hide the version text by pressing and hold for a second on it!");
+		}
+		updatebutnotupdate.setVisibility(View.GONE);
 	}
 	
 	
